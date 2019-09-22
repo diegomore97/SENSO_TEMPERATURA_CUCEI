@@ -16,7 +16,7 @@
 #define POSICION_FECHA 8
 #define TAMANO_TRAMA 35
 
-void dameTemperaturaLm35(short* temperatura);
+void dameTemperaturaLm35(float* temperatura);
 void configurarAdc(void);
 void dameCoordenadas(float* latitud, float* longitud);
 void mensajeEspera(short segundos);
@@ -38,7 +38,7 @@ void configurarAdc(void) {
     TRISA = 0b000001;
 }
 
-void dameTemperaturaLm35(short* temperatura) {
+void dameTemperaturaLm35(float* temperatura) {
     ADCON0bits.CHS = 0b0000;
     ADCON0bits.GO = 1;
     ADCON0bits.GO_DONE = 1; //Bandera en 1
@@ -293,7 +293,7 @@ void convierteFecha(char* cadenaAux, char* fecha) {
 
 void main(void) {
 
-    short temperatura;
+    float temperatura;
     char buffer [TAMANO_CADENA];
     unsigned char horaCompleta[TAMANO_HORA] = "00:00:00";
     char fecha[TAMANO_FECHA] = "00/00/00";
@@ -356,7 +356,7 @@ void main(void) {
             sprintf(buffer, "HORA= %s", horaCompleta); //Copiar cadena
             Lcd_Write_String(buffer); //Imprimir la cadena en la posicion 1,1
             Lcd_Set_Cursor(2, 1);
-            sprintf(buffer, "TEMP= %d", temperatura); //Copiar cadena
+            sprintf(buffer, "TEMP= %.2f", temperatura); //Copiar cadena
             Lcd_Write_String(buffer); //Imprimir la cadena en la posicion 1,1
 
             __delay_ms(500);
@@ -366,7 +366,7 @@ void main(void) {
                     fecha[3], fecha[4], fecha[5]); //Copiar cadena
             Lcd_Write_String(buffer); //Imprimir la cadena en la posicion 1,1sprintf(buffer, "FECHA= %c%c/%c%c/%c%c", fecha[0], fecha[1], fecha[2],
             Lcd_Set_Cursor(2, 1);
-            sprintf(buffer, "TEMP= %d", temperatura); //Copiar cadena
+            sprintf(buffer, "TEMP= %.2f", temperatura); //Copiar cadena
             Lcd_Write_String(buffer); //Imprimir la cadena en la posicion 1,1
         }
 
