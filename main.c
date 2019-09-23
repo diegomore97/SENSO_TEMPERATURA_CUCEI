@@ -218,6 +218,7 @@ void dameDato(char* cadenaFragmentada, int numComas, char* variable) {
 void main(void) {
 
     float temperatura;
+    int fechaReal = 0;
     char buffer [TAMANO_CADENA];
     unsigned char horaCompleta[TAMANO_HORA] = "00:00:00";
     char fecha[TAMANO_FECHA] = "00/00/00";
@@ -247,13 +248,22 @@ void main(void) {
         dameTemperaturaLm35(&temperatura);
 
         leerGps(cadenaFragmentada);
+        dameHora(cadenaFragmentada, horaCompleta);
         dameDato(cadenaFragmentada, 2, latitud);
         dameDato(cadenaFragmentada, 4, longitud);
         dameDato(cadenaFragmentada, 8, fecha);
 
+        if (diaSiguiente) {
+            fechaReal = (fecha[0] - 48) * 10;
+            fechaReal += (fecha[1] - 48);
+
+            if (fechaReal != 1) {
+                fechaReal--;
+            }
+        }
+
         latitudMostrar = dameGrados(latitud);
         longitudMostrar = dameGrados(longitud);
-        dameHora(cadenaFragmentada, horaCompleta);
 
 
 
@@ -285,8 +295,13 @@ void main(void) {
             __delay_ms(500);
             Lcd_Clear();
             Lcd_Set_Cursor(1, 1);
-            sprintf(buffer, "FECHA= %c%c/%c%c/%c%c", fecha[0], fecha[1], fecha[2],
+            if (diaSiguiente)
+                sprintf(buffer, "FECHA= %d/%c%c/%c%c", fechaReal, fecha[2],
                     fecha[3], fecha[4], fecha[5]); //Copiar cadena
+            else
+                sprintf(buffer, "FECHA= %c%c/%c%c/%c%c", fecha[0], fecha[1], fecha[2],
+                    fecha[3], fecha[4], fecha[5]); //Copiar cadena
+
             Lcd_Write_String(buffer); //Imprimir la cadena en la posicion 1,1sprintf(buffer, "FECHA= %c%c/%c%c/%c%c", fecha[0], fecha[1], fecha[2],
             Lcd_Set_Cursor(2, 1);
             sprintf(buffer, "TEMP= %.2f", temperatura); //Copiar cadena
