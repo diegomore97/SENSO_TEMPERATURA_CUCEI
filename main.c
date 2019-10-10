@@ -5,7 +5,7 @@
 #include "config.h"
 #include"UART.h"
 #include "lcd.h"
-#include "sd.h"
+//#include "sd.h"
 
 
 #define RETARDO 5
@@ -28,8 +28,6 @@ void dameFecha(char* cadenaAux);
 void convierteFecha(char* cadenaAux, char* fecha);
 
 char diaSiguiente;
-unsigned char numeros[] = {63, 6, 91, 79, 102, 109, 125, 71, 127, 103};
-// 0  1   2   3   4    5    6    7   8    9
 
 void configurarAdc(void) {
     ADCON0bits.ADON = 1; //Encendiendo ADC
@@ -241,7 +239,7 @@ void main(void) {
     Lcd_Init();
     UART_init(9600);
     leerGps(cadenaFragmentada);
-    //mensajeEspera(15); //Esperar 15 segundos para que el gps reciba informacion
+    mensajeEspera(15); //Esperar 15 segundos para que el gps reciba informacion
 
 
     while (1) {
